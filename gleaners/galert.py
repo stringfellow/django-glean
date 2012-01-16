@@ -4,12 +4,14 @@ import getpass
 
 import galerts
 
+from glean.gleaners import GleanerBase
 
-class GAlertConnector(object):
+class GAlertConnector(GleanerBase):
     """Connects to Google Alerts, allows management and retrieves content.
     
     
     """
+
     def alerts_manager():
         un = raw_input("Email: ")
         pwd = getpass.getpass()

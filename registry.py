@@ -94,6 +94,12 @@ class Registry(object):
             assert classname in self._register
             return self._register[classname]
 
+    def items(self):
+        return self._register.items()
+
+    def keys(self):
+        return self._register.keys()
+
 
 # This global object will hold all registered gleaners.
 registry = Registry()
@@ -125,3 +131,4 @@ def autodiscover(glean_noun='gleaners'):
             # attempting to import it, otherwise we want it to bubble up.
             if module_has_submodule(mod, glean_noun):
                 raise e
+    print "Registered %s gleaners" % len(registry.keys())
