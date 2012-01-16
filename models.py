@@ -1,14 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+from glean.registry import registry, autodiscover
+
+try:
+    # if the admin gets hit before the URLS then we need to reg.
+    if len(registry.keys()) == 0:
+        autodiscover()
+except:
+    pass
 
 
 def _get_connectors():
     """Some mechanism to retrieve all available connectors."""
-    return (
-        ('glean.connectors.galert.GAlertConnector', 'Google Alert'),
-    )
+    for key, cls in registry.items():
+        yield (key, cls.description())
 
 
 class Search(models.Model):
