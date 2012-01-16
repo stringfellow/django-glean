@@ -5,3 +5,7 @@ class GleanerBase(object):
     @classmethod
     def description(cls):
         return cls.__doc__
+
+    @classmethod
+    def classname(cls):
+        return cls.__name__

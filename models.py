@@ -22,6 +22,9 @@ class Search(models.Model):
     user = models.ForeignKey(User)
     term = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return u"%s seeks '%s'" % (self.user, self.term)
+
 
 class Feed(models.Model):
     """A user's connection to a service for a search."""
@@ -29,6 +32,17 @@ class Feed(models.Model):
     search = models.ForeignKey(Search)
 
     connector = models.CharField(max_length=255, choices=_get_connectors())
+
+    def __unicode__(self):
+        return u"[%s] %s" % (
+            self.get_connector().classname(), self.search)
+
+    def get_connector(self):
+        if hasattr(self, '_connector'):
+            return self._connector
+        else:
+            self._connector = registry.find(self.connector)
+            return self._connector
 
     def update(self):
         pass
