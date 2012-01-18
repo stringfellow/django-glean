@@ -9,9 +9,11 @@
 	</head>
 	<body>
         <h1>Registered gleaners</h1>
+        <ul>
         {% for key, val in registry.items %}
-            {{ key }} - {{ val.description }}
+            <li>{{ key }} - {{ val.description }}</li>
         {% endfor %}
+        </ul>
 	</body>
 </html>
 

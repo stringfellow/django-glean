@@ -33,6 +33,11 @@ class Feed(models.Model):
 
     connector = models.CharField(max_length=255, choices=_get_connectors())
 
+    # the meta field is populated by whatever the feed needs...
+    meta = models.TextField(blank=True, default="")
+
+    last_updated = models.DateTimeField()
+
     def __unicode__(self):
         return u"[%s] %s" % (
             self.get_connector().classname(), self.search)
@@ -41,11 +46,12 @@ class Feed(models.Model):
         if hasattr(self, '_connector'):
             return self._connector
         else:
-            self._connector = registry.find(self.connector)
+            self._connector = registry.find(self.connector)(self.meta)
             return self._connector
 
     def update(self):
-        pass
+        """Using the initialised connector, update me!"""
+        return self.get_connector().update(self)
 
 
 class Article(models.Model):
