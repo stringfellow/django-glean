@@ -22,13 +22,18 @@ class GleanerBase(object):
         """A set of keys for which we need values."""
         return []
 
+    def __unicode__(self):
+        """A (unique?) name."""
+        return u"Unknown"
+
     def __getattr__(self, name):
         """Quick access to opts. May be dangerous..."""
         if name in self._options:
             return self._options[name]
         raise AttributeError
 
-    def __init__(self, meta):
+    def __init__(self, meta, feed):
+        self.feed = feed
         self._options = {}
         if type(meta) == dict:
             self._options = meta
@@ -37,15 +42,21 @@ class GleanerBase(object):
         else:
             raise InvalidMetaError("Want dict or string, got %s" % type(meta))
 
-    def can_update(self, feed):
+    def can_update(self):
         """Can we update? Check the feed's last update..."""
-        last_updated = feed.last_updated
+        last_updated = self.feed.last_updated
         delta = datetime.now() - last_updated
         return delta >= timedelta(minutes=self.max_update_frequency)
 
-    def update(self, feed):
+    def filter(self, entries):
+        """If we need to, filter the entries."""
+        if self.feed.force_term_filter:
+            raise NotImplemented
+        return entries
+
+    def update(self):
         """Gets/creates articles using own method, adds to feed.
-        
+
         1. Find articles in stream
         2. Get/create them
         3. Update them with the feed object
