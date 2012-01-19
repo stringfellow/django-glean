@@ -14,6 +14,8 @@ import logging
 
 from django.utils.importlib import import_module
 
+from glean.gleaners import GleanerBase
+
 log = logging.getLogger(__name__)
 
 class Registry(object):
@@ -53,6 +55,7 @@ class Registry(object):
         gleaner_module = import_module(gleaner_path)
         for name, obj in inspect.getmembers(gleaner_module):
             if (inspect.isclass(obj) and  # check it's a class
+                issubclass(obj, GleanerBase) and
                 obj.__module__ == gleaner_path):  # and from this module
                 # the name as it appears in the import tag:
                 fully_qualified_gleaner = ".".join([gleaner_path, name])
@@ -123,6 +126,7 @@ def autodiscover(glean_noun='gleaners'):
             before_import_register = copy.copy(registry._register)
             registry.register(app, glean_noun)
         except Exception, e:
+            print e
             log.error(e)
             registry._register = before_import_register
 
