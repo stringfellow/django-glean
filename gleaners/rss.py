@@ -3,11 +3,15 @@
 import datetime
 import feedparser
 
+from django import forms
+
 from glean import FeedCannotUpdate
 from glean.doc_inherit import doc_inherit
 from glean.gleaners import GleanerBase
 from glean.utils import get_or_create_article
 
+class RSSSetupForm(forms.Form):
+    pass
 
 class RSSFeed(GleanerBase):
     """Grabs stories from an RSS feed."""
@@ -15,15 +19,19 @@ class RSSFeed(GleanerBase):
 
     def __unicode__(self):
         try:
-            return self.URL
+            return self.url
         except AttributeError:
             return u"(Uninitialised)"
 
     @doc_inherit
     def meta(self):
         return (
-            'URL',
+            'url',
         )
+
+    def render_setup(self):
+        """Renders all info needed to get its meta data."""
+        pass
 
     def _save_entry_to_article(self, entry):
         """Given a feed entry, make an article."""
@@ -75,7 +83,7 @@ class RSSFeed(GleanerBase):
     def update(self):
         if not self.can_update():
             raise FeedCannotUpdate 
-        _f = feedparser.parse(self.URL)
+        _f = feedparser.parse(self.url)
         entries = self.filter(self._tag_entries(_f.entries))
 
         for entry in entries:

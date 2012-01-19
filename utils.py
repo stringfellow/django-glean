@@ -2,12 +2,11 @@
 # -*- coding: iso-8859-15 -*-
 import datetime
 
-from glean.models import Article
-
 
 def get_or_create_article(params, keys=[], tags=[]):
     """Make or create an article, using keys to determine uniqueness."""
     # make a lookup dict of the desired key fields
+    from glean.models import Article
     lookup_dict = dict([(k, params[k]) for k in keys])
     try:
         article = Article.objects.get(**lookup_dict)

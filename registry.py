@@ -14,7 +14,6 @@ import logging
 
 from django.utils.importlib import import_module
 
-from glean.gleaners import GleanerBase
 
 log = logging.getLogger(__name__)
 
@@ -47,6 +46,7 @@ class Registry(object):
 
     def _add_classes(self, app_name, glean_noun, modnm=None):
         """Add the module's classes to the registry."""
+        from glean.gleaners import GleanerBase
         if modnm in ('options',):  # don't import
             return
         gleaner_path = ".".join([app_name, glean_noun])
