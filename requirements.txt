@@ -1,1 +1,13 @@
-galerts
+BeautifulSoup==3.2.0
+-e svn+https://code.djangoproject.com/svn/django/trunk@17146#egg=Django-1.4_pre_alpha-py2.6-dev_r17146
+RssLib==1.0.0.0
+South==0.7.3
+django-annoying==0.7.6
+django-extensions==0.7.1
+django-taggit==0.9.3
+feedparser==5.1
+galerts==0.2.4dev
+gunicorn==0.13.4
+ipython==0.12
+lxml==2.3.2
+-e git+https://github.com/jdunck/python-unicodecsv.git@22eabfe1cfebed61db8030993d0989ba4ec5a96b#egg=unicodecsv-dev
