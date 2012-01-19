@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from taggit.managers import TaggableManager
+
 from glean.registry import registry, autodiscover
 
 try:
@@ -80,6 +82,8 @@ class Article(models.Model):
     feed_sources = models.ManyToManyField(Feed, null=True, blank=True)
     
     extra_meta = models.TextField(null=True, blank=True)
+
+    tags = TaggableManager()
 
     def __unicode__(self):
         return self.title
