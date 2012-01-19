@@ -25,6 +25,7 @@ class FeedAdmin(admin.ModelAdmin):
                     '%s cannot update - too soon!' % feed)
     update.short_description = "Update feeds"
 
-admin.site.register(Search)
+
+admin.site.register(Search, list_display=('user', 'term', 'print_synonyms'))
 admin.site.register(Feed, FeedAdmin)
-admin.site.register(Article)
+admin.site.register(Article, list_display=('title',))

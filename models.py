@@ -27,7 +27,12 @@ class Search(models.Model):
 
     def get_synonyms(self):
         """Just get synonyms from list."""
-        return filter(lambda s: len(s), self.synonyms.split('\n'))
+        return map(lambda s: s.strip().lower(),
+                   filter(lambda s: len(s), self.synonyms.split('\n')))
+
+    def print_synonyms(self):
+        """Just for list display, really."""
+        return ", ".join(self.get_synonyms())
 
     def all_terms(self):
         """Set of all term, synonyms."""

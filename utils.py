@@ -5,8 +5,9 @@ import datetime
 from glean.models import Article
 
 
-def get_or_create_article(params, keys=[]):
+def get_or_create_article(params, keys=[], tags=[]):
     """Make or create an article, using keys to determine uniqueness."""
+    # make a lookup dict of the desired key fields
     lookup_dict = dict([(k, params[k]) for k in keys])
     try:
         article = Article.objects.get(**lookup_dict)
@@ -17,6 +18,10 @@ def get_or_create_article(params, keys=[]):
         article = Article(**params)
         article.found_date = datetime.datetime.now()
         article.save()
+
+    # add tags passed in, how we found this
+    article.tags.add(*tags)
+    # update body, snapshot etc.
     update_content(article)
     return article
 
