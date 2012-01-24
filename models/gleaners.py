@@ -1,14 +1,32 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
 from datetime import datetime, timedelta
-from django.utils import simplejson as json
+from django.db import models
 
 
 class InvalidMetaError(Exception):
     pass
 
 
-class GleanerBase(object):
+class GleanerBase(models.Model):
     """A base gleaner class from which other gleaners inherit."""
-    max_update_frequency = 1  # minutes
+    search = models.ForeignKey(
+        'Search', related_name="%(app_label)s_%(class)s_feeds")
+
+    force_term_filter = models.BooleanField(
+        default=False,
+        help_text="If this is a general feed, force it to filter for the term."
+    )
+
+    max_update_frequency = models.FloatField(default=1)
+    last_updated = models.DateTimeField()
+    articles = models.ManyToManyField(
+        'Article', related_name="%(app_label)s_%(class)s_sources",
+        null=True, blank=True)
+
+    class Meta:
+        abstract = True
+        app_label="glean"
 
     @classmethod
     def description(cls):
@@ -18,39 +36,19 @@ class GleanerBase(object):
     def classname(cls):
         return cls.__name__
 
-    def meta(self):
-        """A set of keys for which we need values."""
-        return []
-
     def __unicode__(self):
         """A (unique?) name."""
         return u"Unknown"
 
-    def __getattr__(self, name):
-        """Quick access to opts. May be dangerous..."""
-        if name in self._options:
-            return self._options[name]
-        raise AttributeError
-
-    def __init__(self, meta, feed):
-        self.feed = feed
-        self._options = {}
-        if type(meta) == dict:
-            self._options = meta
-        elif type(meta) == unicode:
-            self._options = json.loads(meta)
-        else:
-            raise InvalidMetaError("Want dict or string, got %s" % type(meta))
-
     def can_update(self):
         """Can we update? Check the feed's last update..."""
-        last_updated = self.feed.last_updated
+        last_updated = self.last_updated
         delta = datetime.now() - last_updated
         return delta >= timedelta(minutes=self.max_update_frequency)
 
     def filter(self, entries):
         """If we need to, filter the entries."""
-        if self.feed.force_term_filter:
+        if self.force_term_filter:
             raise NotImplemented
         return entries
 

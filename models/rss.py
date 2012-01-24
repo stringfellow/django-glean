@@ -3,31 +3,23 @@
 import datetime
 import feedparser
 
-from django import forms
+from django.db import models
 
 from glean import FeedCannotUpdate
 from glean.doc_inherit import doc_inherit
-from glean.gleaners import GleanerBase
+from glean.models.gleaners import GleanerBase
 from glean.utils import get_or_create_article
 
-class RSSSetupForm(forms.Form):
-    pass
 
 class RSSFeed(GleanerBase):
     """Grabs stories from an RSS feed."""
-    max_update_frequency = 0.01
+    url = models.URLField()
 
     def __unicode__(self):
         try:
             return self.url
         except AttributeError:
             return u"(Uninitialised)"
-
-    @doc_inherit
-    def meta(self):
-        return (
-            'url',
-        )
 
     def render_setup(self):
         """Renders all info needed to get its meta data."""
@@ -44,8 +36,8 @@ class RSSFeed(GleanerBase):
             extra_meta=str(entry),
         )
         _article = get_or_create_article(params, ['title', 'url'], matches)
-        _article.feed_sources.add(self.feed)
-        _article.save()
+        self.articles.add(_article)
+        self.save()
 
     def _match_terms(self, value):
         """Check if term is in value, return matched."""
@@ -59,7 +51,7 @@ class RSSFeed(GleanerBase):
             elif isinstance(value, basestring):
                 value = value.lower().split(' ')
 
-            return self.feed.search.all_terms() & set(value)
+            return self.search.all_terms() & set(value)
         except TypeError:
             return set([])
 
@@ -75,19 +67,19 @@ class RSSFeed(GleanerBase):
 
     @doc_inherit
     def filter(self, entries):
-        if not self.feed.force_term_filter:
+        if not self.force_term_filter:
             return entries
         return filter(lambda e: len(e['MATCHES']) > 0, entries)
 
     @doc_inherit
     def update(self):
         if not self.can_update():
-            raise FeedCannotUpdate 
+            raise FeedCannotUpdate
         _f = feedparser.parse(self.url)
         entries = self.filter(self._tag_entries(_f.entries))
 
         for entry in entries:
             self._save_entry_to_article(entry)
-        self.feed.last_updated = datetime.datetime.now()
-        self.feed.save()
+        self.last_updated = datetime.datetime.now()
+        self.save()
         return True

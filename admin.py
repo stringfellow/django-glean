@@ -4,28 +4,33 @@ from django.contrib import admin
 from django.contrib import messages
 
 from glean import FeedCannotUpdate
-from glean.models import Search, Feed, Article
+from glean.models import Search, Article
+from glean.models import RSSFeed
 
 
-class FeedAdmin(admin.ModelAdmin):
+class SearchAdmin(admin.ModelAdmin):
     actions = ['update']
+    list_display=('user', 'term', 'print_synonyms')
 
     def update(self, request, queryset):
-        for feed in queryset:
-            try:
-                if feed.update():
+        for search in queryset:
+            feeds = search.get_feeds()
+
+            for feed in feeds:
+                try:
+                    if feed.update():
+                        messages.add_message(
+                            request,
+                            messages.SUCCESS,
+                            '%s updated.' % feed)
+                except FeedCannotUpdate:
                     messages.add_message(
                         request,
-                        messages.SUCCESS,
-                        '%s updated.' % feed)
-            except FeedCannotUpdate:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    '%s cannot update - too soon!' % feed)
+                        messages.WARNING,
+                        '%s cannot update - too soon!' % feed)
     update.short_description = "Update feeds"
 
 
-admin.site.register(Search, list_display=('user', 'term', 'print_synonyms'))
-admin.site.register(Feed, FeedAdmin)
+admin.site.register(RSSFeed)
+admin.site.register(Search, SearchAdmin)
 admin.site.register(Article, list_display=('title',))
