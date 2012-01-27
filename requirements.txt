@@ -1,13 +1,11 @@
-BeautifulSoup==3.2.0
--e svn+https://code.djangoproject.com/svn/django/trunk@17146#egg=Django-1.4_pre_alpha-py2.6-dev_r17146
 RssLib==1.0.0.0
 South==0.7.3
+-e git+https://github.com/earle/django-bootstrap.git@7d222492f14fc02df00573f8af50fc4b4ebc8b05#egg=bootstrap-dev
 django-annoying==0.7.6
+-e git+https://github.com/theatlantic/django-chosen.git@a0e3ae06cb87fc894ce037220396203007db987b#egg=django_chosen-dev
 django-extensions==0.7.1
 django-taggit==0.9.3
 feedparser==5.1
 galerts==0.2.4dev
 gunicorn==0.13.4
-ipython==0.12
 lxml==2.3.2
--e git+https://github.com/jdunck/python-unicodecsv.git@22eabfe1cfebed61db8030993d0989ba4ec5a96b#egg=unicodecsv-dev
