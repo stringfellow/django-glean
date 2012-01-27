@@ -46,9 +46,7 @@ class Registry(object):
 
     def _add_classes(self, app_name, glean_noun, modnm=None):
         """Add the module's classes to the registry."""
-        from glean.gleaners import GleanerBase
-        if modnm in ('options',):  # don't import
-            return
+        from glean.models import GleanerBase
         gleaner_path = ".".join([app_name, glean_noun])
         if modnm:  # if the gleaners is a 'package' then there'll be modnm too
             gleaner_path = gleaner_path + "." + modnm
@@ -102,6 +100,14 @@ class Registry(object):
 
     def keys(self):
         return self._register.keys()
+
+    def choices(self):
+        return [
+            (k, v.__name__)
+            for k, v in self.items()]
+
+    def is_empty(self):
+        return len(self._register.keys()) == 0
 
 
 # This global object will hold all registered gleaners.
