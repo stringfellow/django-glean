@@ -46,7 +46,7 @@ class RSSFeed(GleanerBase):
             if type(value) == dict:
                 result = set([])
                 for k, v in value.items():
-                    result |= self._match_term(v)
+                    result |= self._match_terms(v)
                 return result
             elif isinstance(value, basestring):
                 value = value.lower().split(' ')

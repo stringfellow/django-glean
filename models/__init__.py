@@ -12,8 +12,10 @@ from glean.models.rss import RSSFeed
 class Search(models.Model):
     """A user's configured search profile,"""
     user = models.ForeignKey(User)
-    term = models.CharField(max_length=255)
-    synonyms = models.TextField(default="", help_text="One per line")
+    term = models.CharField(max_length=255, help_text="Search term")
+    synonyms = models.TextField(
+        default="", blank=True, null=True,
+        help_text="One per line")
 
     def get_feeds(self):
         """Get all feeds for this search.
@@ -49,39 +51,6 @@ class Search(models.Model):
 
     def __unicode__(self):
         return u"%s seeks '%s'" % (self.user, self.term)
-#
-#
-#class Feed(models.Model):
-#    """A user's connection to a service for a search."""
-#    user = models.ForeignKey(User)
-#    search = models.ForeignKey(Search)
-#
-#    connector = models.CharField(max_length=255, choices=_get_connectors())
-#
-#    # the meta field is populated by whatever the feed needs...
-#    force_term_filter = models.BooleanField(
-#        default=False,
-#        help_text="If this is a general feed, force it to filter for the term."
-#    )
-#    meta = models.TextField(blank=True, default="")
-#
-#    last_updated = models.DateTimeField()
-#
-#    def __unicode__(self):
-#        gleaner = self.get_connector()
-#        return u"[%s - %s] %s" % (
-#            gleaner.classname(), gleaner, self.search)
-#
-#    def get_connector(self):
-#        if hasattr(self, '_connector'):
-#            return self._connector
-#        else:
-#            self._connector = registry.find(self.connector)(self.meta, self)
-#            return self._connector
-#
-#    def update(self):
-#        """Using the initialised connector, update me!"""
-#        return self.get_connector().update()
 
 
 class Article(models.Model):

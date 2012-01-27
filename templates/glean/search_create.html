@@ -1,0 +1,59 @@
+{% extends "glean/base.html" %}
+
+{% block content %}
+
+<h1>Create Search</h1>
+
+<form action='.' method="POST" id="search_form">
+    {% csrf_token %}
+    {{ form }}
+    <input id="add_feed" type="submit" class="btn primary" value="Add feed"></input>
+</form>
+
+<div id="new_feed">
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+
+    function addFeed(event) {
+        event.preventDefault();
+        $.ajax("{% url glean-search-create %}",
+            {
+                data: $('#search_form').serialize(),
+                type: "POST",
+                success: function(data) {
+                    $('#search_form').fadeOut();
+                    $('#new_feed').load(
+                        "{% url glean-gleaner-chooser %}",
+                        function() {
+                            $('#id_feed_type').bind('change', function() {
+                                var url = "{% url glean-gleaner-form "xxx" %}";
+                                url = url.replace("xxx", $('#id_feed_type').val());
+                                $('#new_feed').load(url);
+                            });
+                        });
+                },
+                error: function(xhr, error, e){
+                    var errors = $.parseJSON(xhr.responseText);
+                    for (key in errors){
+                        $('#id_' + key)
+                        .after(
+                            '<span class="help-inline">' +
+                            errors[key] +
+                            '</span>')
+                        .parent().parent().addClass('error');
+                    }
+                }
+            }
+        );
+    }
+
+    $(document).ready(function() {
+        $('#add_feed').bind('click', addFeed);
+    });
+</script>
+{% endblock %}
