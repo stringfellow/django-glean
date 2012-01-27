@@ -40,11 +40,14 @@ class GleanerBase(models.Model):
         """A (unique?) name."""
         return u"Unknown"
 
+    def next_update(self):
+        """What is the next update date?"""
+        delta = timedelta(minutes=self.max_update_frequency)
+        return self.last_updated + delta
+
     def can_update(self):
         """Can we update? Check the feed's last update..."""
-        last_updated = self.last_updated
-        delta = datetime.now() - last_updated
-        return delta >= timedelta(minutes=self.max_update_frequency)
+        return datetime.now() > self.next_update()
 
     def filter(self, entries):
         """If we need to, filter the entries."""
