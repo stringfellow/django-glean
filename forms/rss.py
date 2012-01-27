@@ -8,3 +8,4 @@ class RSSFeedForm(forms.BootstrapModelForm):
     """Present the fields for the RSSFeed"""
     class Meta:
         model = RSSFeed 
+        exclude = ('search', 'last_updated', 'articles')

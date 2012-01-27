@@ -9,14 +9,15 @@ from glean import FeedCannotUpdate
 from glean.doc_inherit import doc_inherit
 from glean.models.gleaners import GleanerBase
 from glean.utils import get_or_create_article
-from glean.forms.rss import RSSFeedForm
 
 
 class RSSFeed(GleanerBase):
     """Grabs stories from an RSS feed."""
     url = models.URLField()
 
-    def form(self):
+    @classmethod
+    def get_form(cls):
+        from glean.forms.rss import RSSFeedForm
         return RSSFeedForm
 
     def __unicode__(self):

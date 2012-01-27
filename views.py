@@ -49,6 +49,13 @@ def gleaner_chooser(request):
     }
 
 
+@render_to("glean/gleaner_form_snippet.html")
 def gleaner_form(request, gleaner_class):
     """return the gleaner form rendered nicely."""
-    return HttpResponse("Form for %s" % gleaner_class)
+    try:
+        gleaner = registry.find(gleaner_class)
+    except AssertionError:
+        return HttpResponse("No feed with that class found.", status=404)
+    return {
+        'form': gleaner.get_form(),
+    }
