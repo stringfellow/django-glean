@@ -1,4 +1,3 @@
-RssLib==1.0.0.0
 South==0.7.3
 -e git+https://github.com/earle/django-bootstrap.git@7d222492f14fc02df00573f8af50fc4b4ebc8b05#egg=bootstrap-dev
 django-annoying==0.7.6
