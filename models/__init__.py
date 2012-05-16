@@ -49,6 +49,17 @@ class Search(models.Model):
         terms.append(self.term)
         return set(terms)
 
+    def latest_update(self):
+        """Return the last date that an article was found."""
+        latest = None
+        for feed in self.get_feeds():
+            articles = feed.articles.order_by('-found_date')
+            if articles.count():
+                _a = articles[0]
+                if not latest or latest.found_date < _a.found_date:
+                    latest = _a
+        return _a.found_date
+
     def __unicode__(self):
         return u"%s seeks '%s'" % (self.user, self.term)
 
