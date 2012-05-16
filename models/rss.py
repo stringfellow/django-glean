@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
-import datetime
 import feedparser
 
 from django.db import models
+from django.utils.timezone import now
 
 from glean import FeedCannotUpdate
 from glean.doc_inherit import doc_inherit
@@ -85,6 +85,6 @@ class RSSFeed(GleanerBase):
 
         for entry in entries:
             self._save_entry_to_article(entry)
-        self.last_updated = datetime.datetime.now()
+        self.last_updated = now()
         self.save()
         return True

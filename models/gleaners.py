@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils.timezone import now
 from django.db import models
 
 
@@ -47,7 +48,7 @@ class GleanerBase(models.Model):
 
     def can_update(self):
         """Can we update? Check the feed's last update..."""
-        return datetime.now() > self.next_update()
+        return now() > self.next_update()
 
     def filter(self, entries):
         """If we need to, filter the entries."""
