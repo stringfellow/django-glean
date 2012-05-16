@@ -58,7 +58,7 @@ class Search(models.Model):
                 _a = articles[0]
                 if not latest or latest.found_date < _a.found_date:
                     latest = _a
-        return _a.found_date
+        return latest.found_date if latest else None
 
     def __unicode__(self):
         return u"%s seeks '%s'" % (self.user, self.term)
