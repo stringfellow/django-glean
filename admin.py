@@ -53,4 +53,4 @@ class GleanerAdmin(admin.ModelAdmin):
 
 admin.site.register(RSSFeed, GleanerAdmin)
 admin.site.register(Search, SearchAdmin)
-admin.site.register(Article, list_display=('title',))
+admin.site.register(Article, list_display=('title', 'found_date'))
