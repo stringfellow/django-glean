@@ -1,0 +1,22 @@
+{% extends "glean/base.html" %}
+{% block title %}{% if user.is_authenticated %}Glean: My searches{% else %}Glean. Know stuff.{% endif %}{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Hello {{ user }}</h1>
+
+    <div class="searches">
+        <h2>My searches</h2>
+
+        <ul>
+            {% for search in searches %}
+            <li>{% include "glean/snippets/search_snippet.html" %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <h1>Recent finds...</h1>
+    <div class="recent">
+    </div>
+{% endif %}
+{% endblock %}

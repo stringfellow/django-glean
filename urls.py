@@ -4,6 +4,10 @@ from django.conf.urls.defaults import patterns, include, url
 
 
 urlpatterns = patterns('',
+    url(r'^$',
+        'glean.views.home',
+        name='glean-home'),
+
     # GLEANERS
     url(r'^gleaners/$',
         'glean.views.gleaners',

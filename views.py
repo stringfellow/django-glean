@@ -10,6 +10,16 @@ from glean.forms import SearchForm, GleanerPicker
 from glean.models import Search
 
 
+@render_to('glean/home.html')
+def home(request):
+    if request.user.is_authenticated():
+        return {
+            'searches': request.user.search_set.all(),
+        }
+    else:
+        return {}
+
+
 @render_to('glean/gleaners.html')
 def gleaners(request):
     return {'registry': registry}
