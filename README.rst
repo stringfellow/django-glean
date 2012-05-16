@@ -55,3 +55,17 @@ A feed exposes the data underneath in a known way:
    but the subject and body will differ greatly.
 
 
+Usage
+=====
+
+* Fire up a new project and add `glean` and its dependencies (see
+  `requirements.txt` for these).
+* Go to the admin and add some searches.
+* Add some feeds (e.g. RSS Feeds) to your search
+* Fire the "Update" admin action on the search, or run
+  `python manage.py update`.
+
+
+The below are as yet un-implemented:
+* [Run `python manage.py snapshot` to get text/render of articles]
+
