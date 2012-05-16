@@ -5,7 +5,9 @@
 {% if user.is_authenticated %}
     <h1>Hello {{ user }}</h1>
 
-    <div class="searches">
+    <div id="glean">
+    </div>
+    <div class="searches" style="display: none;">
         <h2>My searches</h2>
 
         <ul>
@@ -20,3 +22,21 @@
     </div>
 {% endif %}
 {% endblock %}
+
+
+{% block scripts %}
+<!-- <script src="{{ STATIC_URL }}glean/js/application.js"></script> -->
+<script src="http://localhost:9294/application.js"></script> 
+
+{% if user.is_authenticated %}
+<script type="text/javascript" charset="utf-8">
+    
+    var exports = this;                                                                                                                                                                                                                                                            
+    jQuery(function(){
+        var App = require("index");
+        exports.app = new App({el: $("#glean")});
+    });
+</script>
+{% endif %}
+{% endblock %}
+
