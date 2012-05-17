@@ -1,6 +1,6 @@
 require('lib/setup')
 
-Spine = require('spine')
+Spine    = require('spine')
 Searches = require('controllers/searches')
 
 class App extends Spine.Controller
@@ -12,4 +12,3 @@ class App extends Spine.Controller
     Spine.Route.setup()
 
 module.exports = App
-    
