@@ -11,8 +11,8 @@
     </label>
   
     <label>
-      <span>Email</span>
-      <input type="email" name="email" value="<%= @email %>">
+      <span>Synonyms</span>
+      <textarea name="synonyms"><%= @synonyms %></textarea>
     </label>  
     
     <button>Save</button>

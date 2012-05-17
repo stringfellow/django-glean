@@ -35,8 +35,8 @@ class Sidebar extends Spine.Controller
     @render()
     
   render: =>
-    contacts = Search.filter(@query)
-    @list.render(contacts)
+    searches = Search.filter(@query)
+    @list.render(searches)
     
   change: (item) =>
     @navigate '/searches', item.id
