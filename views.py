@@ -20,6 +20,16 @@ def home(request):
         return {}
 
 
+def persist(request):
+    """Persistence view for spine"""
+    if request.method == 'GET':
+        searches = list(request.user.search_set.values(
+            'term',
+            'synonyms',
+            'id'))
+        return HttpResponse(json.dumps(searches), mimetype="application/json")
+
+
 @render_to('glean/gleaners.html')
 def gleaners(request):
     return {'registry': registry}

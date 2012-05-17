@@ -6,8 +6,8 @@
 <div class="content">
   <form>
     <label>
-      <span>Name</span>
-      <input type="text" name="name" value="<%= @name %>">
+      <span>Search term</span>
+      <input type="text" name="term" value="<%= @term %>">
     </label>
   
     <label>

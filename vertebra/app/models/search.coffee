@@ -1,12 +1,14 @@
 Spine = require('spine')
 
 class Search extends Spine.Model
-  @configure 'Search', 'name', 'synonyms'
+  @configure 'Search', 'term', 'synonyms'
+
+  @extend Spine.Model.Ajax
   
   @filter: (query) ->
     return @all() unless query
     query = query.toLowerCase()
     @select (item) ->
-      item.name?.toLowerCase().indexOf(query) isnt -1
+      item.term?.toLowerCase().indexOf(query) isnt -1
         
 module.exports = Search

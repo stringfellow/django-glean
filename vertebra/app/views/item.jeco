@@ -1,6 +1,6 @@
 <div class="item">
-  <%= @name %>
-  <%- "<i>(No term)</i>" unless @name %>
+  <%= @term %>
+  <%- "<i>(No term)</i>" unless @term %>
   <span class="synonyms">
     <%= @synonyms %>
   </span>

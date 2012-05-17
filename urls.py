@@ -8,6 +8,10 @@ urlpatterns = patterns('',
         'glean.views.home',
         name='glean-home'),
 
+    url(r'^persist$',
+        'glean.views.persist',
+        name='glean-persist'),
+
     # GLEANERS
     url(r'^gleaners/$',
         'glean.views.gleaners',
