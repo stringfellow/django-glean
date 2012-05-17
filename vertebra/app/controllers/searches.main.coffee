@@ -38,7 +38,10 @@ class Edit extends Spine.Controller
     @active @change
   
   render: ->
-    @html require('views/form')(@item)
+    form_data =
+      item: @item
+      csrf_token: Search.csrf_token
+    @html require('views/form')(form_data)
     
   change: (params) =>
     @item = Search.find(params.id)

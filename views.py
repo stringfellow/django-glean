@@ -2,6 +2,8 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.utils import simplejson as json
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
 from annoying.decorators import render_to
 from glean.registry import registry
@@ -20,14 +22,26 @@ def home(request):
         return {}
 
 
-def persist(request):
+# Do this better: CSRF?
+@csrf_exempt
+def persist(request, search_id=None):
     """Persistence view for spine"""
+    # fetch
     if request.method == 'GET':
         searches = list(request.user.search_set.values(
             'term',
             'synonyms',
             'id'))
         return HttpResponse(json.dumps(searches), mimetype="application/json")
+    # update
+    if request.method == 'PUT':
+        search = get_object_or_404(Search, id=search_id)
+        response = dict([(k, v) for k, v in search.__dict__.items() if k in ['term', 'synonyms', 'id']])
+        # Danger: This needs to go through a form.
+        response.update(request.raw_post_data)
+        search.__dict__.update(response)
+        search.save()
+        return HttpResponse(json.dumps(response), mimetype="application/json")
 
 
 @render_to('glean/gleaners.html')

@@ -8,7 +8,11 @@ urlpatterns = patterns('',
         'glean.views.home',
         name='glean-home'),
 
+    # PERSISTENCE
     url(r'^persist$',
+        'glean.views.persist',
+        name='glean-persist'),
+    url(r'^persist/(?P<search_id>\d+)$',
         'glean.views.persist',
         name='glean-persist'),
 
