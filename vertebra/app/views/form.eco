@@ -5,6 +5,7 @@
 
 <div class="content">
   <form>
+    <input type="hidden" name="user" value="<%= @item.user %>" />
     <label>
       <span>Search term</span>
       <input type="text" name="term" value="<%= @item.term %>">

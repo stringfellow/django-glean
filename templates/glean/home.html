@@ -45,7 +45,8 @@
     jQuery(function(){
         var App = require("index");
         var Search = require("models/search");
-        Search.url = "{% url glean-persist %}";
+        Search.url = "{% url api_dispatch_list resource_name="search" api_name="v1" %}";
+        Search.user_api_uri = "{% url api_dispatch_detail resource_name="user" api_name="v1" pk=user.pk %}";
         exports.app = new App({el: $("#glean")});
     });
 </script>

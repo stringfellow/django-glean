@@ -1,7 +1,7 @@
 Spine = require('spine')
 
 class Search extends Spine.Model
-  @configure 'Search', 'term', 'synonyms'
+  @configure 'Search', 'term', 'synonyms', 'user'
 
   @extend Spine.Model.Ajax
   

@@ -42,7 +42,8 @@ class Sidebar extends Spine.Controller
     @navigate '/searches', item.id
     
   create: ->
-    item = Search.create()
+    item = Search.create
+      user: Search.user_api_uri
     @navigate('/searches', item.id, 'edit')
     
 module.exports = Sidebar

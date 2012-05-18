@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
 from django.conf.urls.defaults import patterns, include, url
+from tastypie.api import Api
+from glean.api.resources import SearchResource, UserResource
+
+v1_api = Api(api_name='v1')
+v1_api.register(SearchResource())
+v1_api.register(UserResource())
 
 
 urlpatterns = patterns('',
@@ -9,6 +15,7 @@ urlpatterns = patterns('',
         name='glean-home'),
 
     # PERSISTENCE
+    url(r'^api/', include(v1_api.urls)),
     url(r'^persist$',
         'glean.views.persist',
         name='glean-persist'),
