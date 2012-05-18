@@ -8,4 +8,4 @@ feedparser==5.1
 galerts==0.2.4dev
 gunicorn==0.13.4
 lxml==2.3.2
-django-tastypie=0.9.11
+django-tastypie==0.9.11
