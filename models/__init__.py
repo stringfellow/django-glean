@@ -8,6 +8,9 @@ from taggit.managers import TaggableManager
 from glean.models.gleaners import GleanerBase
 from glean.models.rss import RSSFeed
 
+GLEANERS = [
+    'glean.RSSFeed',
+]
 
 class Search(models.Model):
     """A user's configured search profile,"""

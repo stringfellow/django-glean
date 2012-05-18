@@ -1,14 +1,15 @@
+from django.conf import settings
+
 from bootstrap import forms
 from chosen import forms as chosenforms
 
-from glean.models import Search
+from glean.models import Search, GLEANERS
 from glean.forms.rss import RSSFeedForm
-from glean.registry import registry, autodiscover
+
 
 def _get_gleaners():
-    if registry.is_empty():
-        autodiscover("models")
-    return registry.choices()
+    installed_gleaners = getattr(settings, 'INSTALLED_GLEANERS', GLEANERS)
+    return [(gleaner, gleaner) for gleaner in installed_gleaners]
 
 
 class SearchForm(forms.BootstrapModelForm):
